@@ -112,16 +112,17 @@ int HAL_SoftApProvision_Start(void *params, WifiConfigEventCallBack event_cb)
     ret = start_device_softAP(apConfig->ssid, apConfig->psw, apConfig->ch);
 
     if (QCLOUD_RET_SUCCESS == ret) {
+        sg_soft_ap_start = true;
         Log_d("start softAP success!");
         ret = _soft_ap_task_start(event_cb);
     }
 
     if (QCLOUD_RET_SUCCESS != ret) {
+        sg_soft_ap_start = false;
         HAL_SoftApProvision_Stop();
         return ret;
     }
-
-    sg_soft_ap_start = true;
+    
 #endif
     return ret;
 }
